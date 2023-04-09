@@ -1,0 +1,184 @@
+<div class="header">
+  <h2>Ranger App</h2>
+  <div class="icons">
+    <mat-icon
+      aria-hidden="false"
+      aria-label="Example home icon"
+      fontIcon="person"
+    ></mat-icon>
+    <mat-icon
+      aria-hidden="false"
+      aria-label="Example home icon"
+      fontIcon="settings"
+    ></mat-icon>
+  </div>
+</div>
+<div class="home">
+  <div class="sidebar">
+    <ul>
+      <li>
+        <a href="#"
+          ><mat-icon
+            aria-hidden="false"
+            aria-label="Example home icon"
+            fontIcon="photo_camera"
+          ></mat-icon>
+          All devices</a
+        >
+      </li>
+      <li>
+        <a href="#">
+          <mat-icon
+            aria-hidden="false"
+            aria-label="Example home icon"
+            fontIcon="videocam"
+          ></mat-icon>
+          Real time</a
+        >
+      </li>
+      <li>
+        <a href="#">
+          <mat-icon
+            aria-hidden="false"
+            aria-label="Example home icon"
+            fontIcon="schedule"
+          ></mat-icon>
+          Events</a
+        >
+      </li>
+    </ul>
+    <button type="button">
+      <mat-icon
+        aria-hidden="false"
+        aria-label="Example home icon"
+        fontIcon="add"
+      ></mat-icon>
+      New device
+    </button>
+  </div>
+  <div class="content">
+    <div class="nav">
+      <ul>
+        <li class="active">
+          <a href="#">All</a>
+        </li>
+        <li>
+          <a href="#">Real time</a>
+        </li>
+        <li>
+          <a href="#">Events</a>
+        </li>
+      </ul>
+      <mat-icon
+        aria-hidden="false"
+        aria-label="Example home icon"
+        fontIcon="widgets"
+      ></mat-icon>
+    </div>
+    <div class="main">
+      <div class="video">
+        <div class="source">
+          <img src="{{ test_gif }}" alt="gif" />
+        </div>
+        <div class="title"><h3>Store #1</h3></div>
+      </div>
+      <div class="table">
+        <div class="table_header"><h3>Events</h3></div>
+        <div *ngIf="events" class="table_body">
+          <div class="table_row" *ngFor="let ev of events; let i = index">
+            <div class="photo">
+              <img src="{{ ev.image_url }}" alt="" />
+            </div>
+            <div class="detail">
+              <div class="store">
+                <h4>{{ ev.device_name }}</h4>
+              </div>
+              <div class="tag {{ ev.events[0].type }}">
+                <span>{{ ev.events[0].title }}</span>
+              </div>
+              <div class="time">{{ ev.datetime | date : "medium" }}</div>
+            </div>
+
+            <button
+              *ngIf="ev.events[0].type == 'info'; else warn"
+              (click)="openModal(ev.image_url)"
+            >
+              View frame
+            </button>
+            <ng-template #warn>
+              <button (click)="openWarnModal(ev.image_url)">View frame</button>
+            </ng-template>
+          </div>
+        </div>
+        <div class="table-footer">
+          <span
+            ><mat-icon
+              aria-hidden="false"
+              aria-label="Example home icon"
+              fontIcon="check"
+            ></mat-icon>
+            Following events</span
+          >
+          <a href="#">Refresh</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="showModal">
+  <div class="modal-wrapper">
+    <div class="bg"></div>
+    <div class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" (click)="closeModal()">
+            <mat-icon
+              aria-hidden="false"
+              aria-label="Example home icon"
+              fontIcon="close"
+            ></mat-icon>
+          </button>
+        </div>
+        <div class="modal-body">
+          <img
+            src="{{ img_modal }}"
+            style="max-width: 100%; cursor: pointer"
+            class="modal-hover-opacity"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="showWarnModal">
+  <div class="modal-wrapper">
+    <div class="bg"></div>
+    <div class="modal modal-warn">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" (click)="closeWarnModal(warn_even_id)">
+            <mat-icon
+              aria-hidden="false"
+              aria-label="Example home icon"
+              fontIcon="close"
+            ></mat-icon>
+          </button>
+        </div>
+        <div class="modal-body">
+          <h1>Weapon detected</h1>
+          <img
+            src="{{ warn_photo }}"
+            style="max-width: 100%; cursor: pointer"
+            class="modal-hover-opacity"
+          />
+          <div class="btns">
+            <button>Go Live</button>
+            <button>Call police</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
